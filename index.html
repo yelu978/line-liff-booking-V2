@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>預約日期</title>
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 20px; text-align: center; }
+    input { width: 100%; padding: 10px; margin: 20px 0; font-size: 16px; }
+    button { width: 100%; padding: 10px; background: #00b900; color: white; border: none; border-radius: 5px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h3>請選擇預約日期</h3>
+  <input type="date" id="datePicker">
+  <button onclick="submitDate()">確認預約</button>
+
+  <script>
+    // 初始化 LIFF
+    liff.init({ liffId: "2008902381-sUXBqBnJ" }).then(() => {
+      if (!liff.isLoggedIn()) {
+        liff.login();
+      }
+    });
+
+    function submitDate() {
+      const selectedDate = document.getElementById('datePicker').value;
+      if (!selectedDate) {
+        alert('請先選擇日期 ');
+        return;
+      }
+
+      // 將訊息傳回對話框並關閉 LIFF
+      liff.sendMessages([{
+        type: 'text',
+        text: '📅 我已選擇預約日期：' + selectedDate
+      }]).then(() => {
+        liff.closeWindow();
+      }).catch((err) => {
+        console.error('傳送失敗', err);
+      });
+    }
+  </script>
+</body>
+</html>
